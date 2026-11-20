@@ -33,8 +33,6 @@ ai_jobgpt/
 │   └── application_history.json
 │
 ├── .env
-├── test_openai.py
-└── test_jobs_api.py
 ```
 
 > The tree documents the intended/current project structure discussed
