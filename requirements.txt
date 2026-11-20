@@ -1,0 +1,5 @@
+openai	#OpenAI API integration
+python-dotenv	#Secure API key management
+PyYAML	#Read candidate profile
+pydantic	#Validate structured data
+pandas
