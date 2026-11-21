@@ -33,6 +33,8 @@ ai_jobgpt/
 │   └── application_history.json
 │
 ├── .env
+├── test_openai.py
+└── test_jobs_api.py
 ```
 
 > The tree documents the intended/current project structure discussed
@@ -124,6 +126,11 @@ language model.
   -----------------------------------------------------------------------
   File                                Responsibility
   ----------------------------------- -----------------------------------
+  `run_workflow.py`                   Runs the complete workflow in
+                                      sequence: profiling, job discovery,
+                                      enrichment, validation, and
+                                      application preparation.
+
   `.env`                              Holds API credentials and
                                       configuration such as the
                                       OpenRouter model. Do not commit
@@ -186,7 +193,23 @@ application_history.json
 
 ## Run order
 
-Run commands from the project root directory:
+Run the complete workflow with one command from the project root:
+
+``` powershell
+python run_workflow.py
+```
+
+The workflow runner executes these scripts in order:
+
+``` text
+agents/candidate_profiler.py
+agents/job_discovery.py
+agents/job_enrichment.py
+agents/job_validator.py
+agents/application_agent.py
+```
+
+The scripts can also be run individually:
 
 ``` powershell
 python agents/candidate_profiler.py
@@ -199,10 +222,9 @@ python agents/application_agent.py
 `application_tracker.py` is imported by the application workflow; it is
 not normally run as a standalone step.
 
-**Integration note:** The application agent must read
-`outputs/validated_jobs.json` for validation to affect candidate
-matching. If it still reads `outputs/enriched_jobs.json`, the
-validator's results are not yet being enforced.
+**Integration note:** The application agent reads
+`outputs/validated_jobs.json` and evaluates only jobs with
+`validation_status` set to `valid`.
 
 ## Important behavior and limitations
 
